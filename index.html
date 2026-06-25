@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f1e7" />
+  <title>Pressure Reveal | 压力可视化装置</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f6efe4'/%3E%3Cellipse cx='32' cy='32' rx='22' ry='12' fill='none' stroke='%23987659' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23d9ad63'/%3E%3Ccircle cx='52' cy='34' r='4' fill='%238e9b86'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="paper-noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Pressure Reveal 首页">
+      <span class="brand-mark" aria-hidden="true">
+        <i></i><b></b>
+      </span>
+      <span>PRESSURE REVEAL</span>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <button class="nav-link" type="button" data-scroll-to="principle">How it works</button>
+      <button class="nav-start" type="button" data-start>Start Revealing</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero view is-active" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="eyebrow">PRESSURE REVEAL</p>
+        <h1 id="heroTitle"><span>Pressure</span><span>Reveal</span></h1>
+        <p class="hero-subtitle">A gentle way to see how pressure moves around you.</p>
+        <p class="hero-emphasis">Reveal the structure — then adjust the orbit.</p>
+        <div class="hero-cn">
+          <p>把混杂的压力，整理成一张可以看见的轨道图。</p>
+          <p>从看见开始，再完成一个低负担的小步骤。</p>
+        </div>
+        <div class="hero-actions">
+          <button class="primary-button hero-button" type="button" data-start>
+            <span>Start Revealing</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h13M14 7l5 5-5 5" />
+            </svg>
+          </button>
+          <p>No login · No clinical labels · No data storage</p>
+        </div>
+      </div>
+
+      <div class="hero-observatory" aria-label="柔和的轨道压力系统示意图">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="orbit orbit-three"></div>
+        <div class="orbit orbit-four"></div>
+
+        <div class="hero-star">
+          <span class="star-aura"></span>
+          <span class="star-scale"></span>
+          <span class="star-core"></span>
+        </div>
+
+        <button class="planet planet-lavender" type="button" data-planet-label="持续时间" aria-label="持续时间">
+          <span>Duration</span>
+        </button>
+        <button class="planet planet-blue" type="button" data-planet-label="压力强度" aria-label="压力强度">
+          <span>Intensity</span>
+        </button>
+        <button class="planet planet-peach" type="button" data-planet-label="预期落差" aria-label="预期落差">
+          <span>Gap</span>
+        </button>
+        <button class="planet planet-sage" type="button" data-planet-label="可控感" aria-label="可控感">
+          <span>Control</span>
+        </button>
+
+        <span class="node node-a"></span>
+        <span class="node node-b"></span>
+        <span class="node node-c"></span>
+        <span class="cross-star cross-a">+</span>
+        <span class="cross-star cross-b">+</span>
+        <span class="cross-star cross-c">+</span>
+
+        <div id="planetTooltip" class="planet-tooltip" role="status" aria-live="polite">
+          点击行星，观察压力变量
+        </div>
+
+        <svg class="landscape-line" viewBox="0 0 720 220" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 177 C86 145 134 179 214 151 C286 126 334 168 410 142 C493 114 552 154 720 91 V220 H0 Z" />
+          <path d="M0 197 C112 159 196 205 294 169 C405 127 497 199 720 132" />
+          <path class="botanical" d="M647 210 C651 169 654 134 657 93 M657 139 C640 123 628 118 615 115 M655 157 C673 138 686 130 702 126 M657 119 C671 106 682 101 694 98 M650 177 C636 164 625 159 613 157" />
+        </svg>
+      </div>
+
+      <button class="scroll-cue" type="button" data-scroll-to="principle" aria-label="向下了解原理">
+        <span>Observe the structure</span>
+        <i></i>
+      </button>
+    </section>
+
+    <section id="principle" class="principle-section" aria-labelledby="principleTitle">
+      <div class="section-kicker">
+        <span>01</span>
+        <p>THE GENTLE OBSERVATORY</p>
+      </div>
+      <div class="principle-grid">
+        <div>
+          <h2 id="principleTitle">不是评判，<br />只是把结构看清。</h2>
+        </div>
+        <div class="principle-copy">
+          <p>压力很少只有一个名字。它可能同时来自截止日期、关系、身体状态，以及对未来的想象。</p>
+          <p>Pressure Reveal 不提供临床判断。它只把这些来源放进一张安静的轨道图里，让距离、强度与持续时间变得可以观察。</p>
+          <button class="text-button" type="button" data-start>
+            开始整理我的压力结构
+            <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="experience view" aria-labelledby="experienceTitle">
+      <div class="experience-shell">
+        <header class="experience-header">
+          <button id="exitExperienceBtn" class="icon-button" type="button" aria-label="返回首页">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m5-5-5 5 5 5" /></svg>
+          </button>
+          <div class="progress-wrap">
+            <div class="progress-copy">
+              <span id="progressLabel">01 · PRESSURE STRUCTURE</span>
+              <span id="progressCount">1 / 5</span>
+            </div>
+            <div class="progress-track"><i id="progressBar"></i></div>
+          </div>
+          <span class="local-note">LOCAL ONLY</span>
+        </header>
+
+        <section id="modeStep" class="step-panel is-active" aria-labelledby="modeTitle">
+          <div class="step-heading">
+            <p class="eyebrow">CHOOSE THE STRUCTURE</p>
+            <h2 id="modeTitle">这一次，你想观察哪种压力结构？</h2>
+            <p>先选择单一来源或复合来源。这个选择只决定地图结构，不会评价压力是否“足够严重”。</p>
+          </div>
+
+          <div class="mode-grid">
+            <button class="mode-card" type="button" data-pressure-mode="single" aria-pressed="false">
+              <span class="mode-index">01</span>
+              <div class="mode-orbit mode-orbit-single" aria-hidden="true"><i></i><b></b></div>
+              <strong>Single-source pressure</strong>
+              <small>单一压力 · 先清楚地看见一个来源</small>
+            </button>
+            <button class="mode-card" type="button" data-pressure-mode="compound" aria-pressed="false">
+              <span class="mode-index">02</span>
+              <div class="mode-orbit mode-orbit-compound" aria-hidden="true"><i></i><b></b><em></em></div>
+              <strong>Compound pressure</strong>
+              <small>复合压力 · 观察多个来源如何共同运行</small>
+            </button>
+          </div>
+
+          <footer class="step-actions">
+            <p id="modeHint">请选择一种压力结构</p>
+            <button id="toSourcesBtn" class="primary-button" type="button" disabled>
+              <span>Choose pressure sources</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
+            </button>
+          </footer>
+        </section>
+
+        <section id="sourceStep" class="step-panel" aria-labelledby="experienceTitle">
+          <div class="step-heading">
+            <p class="eyebrow">NAME THE ORBITS</p>
+            <h2 id="experienceTitle">此刻，哪些压力正在靠近你？</h2>
+            <p>选择一个或多个来源。你不需要解释全部，也没有“正确”答案。</p>
+          </div>
+
+          <div id="sourceGrid" class="source-grid">
+            <button class="source-card" type="button" data-source="academic" aria-pressed="false">
+              <span class="source-index">01</span>
+              <span class="source-orb source-blue"></span>
+              <strong>Academic / Deadline</strong>
+              <small>学业、任务与截止日期</small>
+              <i>+</i>
+            </button>
+            <button class="source-card" type="button" data-source="career" aria-pressed="false">
+              <span class="source-index">02</span>
+              <span class="source-orb source-peach"></span>
+              <strong>Future / Career</strong>
+              <small>未来选择、就业与不确定性</small>
+              <i>+</i>
+            </button>
+            <button class="source-card" type="button" data-source="social" aria-pressed="false">
+              <span class="source-index">03</span>
+              <span class="source-orb source-lavender"></span>
+              <strong>Social Comparison</strong>
+              <small>同伴比较、排名与社交信息</small>
+              <i>+</i>
+            </button>
+            <button class="source-card" type="button" data-source="relationship" aria-pressed="false">
+              <span class="source-index">04</span>
+              <span class="source-orb source-rose"></span>
+              <strong>Relationship</strong>
+              <small>人际关系与沟通负担</small>
+              <i>+</i>
+            </button>
+            <button class="source-card" type="button" data-source="family" aria-pressed="false">
+              <span class="source-index">05</span>
+              <span class="source-orb source-sage"></span>
+              <strong>Family / Responsibility</strong>
+              <small>家庭期待、照顾与责任</small>
+              <i>+</i>
+            </button>
+            <button class="source-card" type="button" data-source="identity" aria-pressed="false">
+              <span class="source-index">06</span>
+              <span class="source-orb source-violet"></span>
+              <strong>Identity Transition</strong>
+              <small>身份变化、阶段转换与角色不确定</small>
+              <i>+</i>
+            </button>
+            <button class="source-card" type="button" data-source="physical" aria-pressed="false">
+              <span class="source-index">07</span>
+              <span class="source-orb source-stone"></span>
+              <strong>Physical State</strong>
+              <small>睡眠、疲惫与身体不适</small>
+              <i>+</i>
+            </button>
+          </div>
+
+          <footer class="step-actions">
+            <p id="selectionCount">尚未选择压力来源</p>
+            <button id="toVariablesBtn" class="primary-button" type="button" disabled>
+              <span>Continue</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
+            </button>
+          </footer>
+        </section>
+
+        <section id="variablesStep" class="step-panel" aria-labelledby="variablesTitle">
+          <div class="step-heading compact-heading">
+            <p class="eyebrow">ADJUST THE VARIABLES</p>
+            <h2 id="variablesTitle">它现在以什么方式影响你？</h2>
+            <p>每个来源拥有独立参数。先凭直觉移动滑杆，不必过度计算。</p>
+          </div>
+
+          <div id="sourceTabs" class="source-tabs" aria-label="已选择的压力来源"></div>
+
+          <div class="variable-layout">
+            <aside class="active-source-card">
+              <p>EDITING ORBIT</p>
+              <span id="activeSourceOrb" class="active-source-orb"></span>
+              <h3 id="activeSourceName">—</h3>
+              <small id="activeSourceZh">—</small>
+              <div class="mini-orbit" aria-hidden="true"><i></i><b></b></div>
+            </aside>
+
+            <div class="slider-grid">
+              <label class="slider-card">
+                <span><strong>Intensity</strong><small>压力强度</small></span>
+                <output id="intensityValue">5</output>
+                <input id="intensity" type="range" min="1" max="10" value="5" />
+                <em>此刻它有多强烈？</em>
+              </label>
+              <label class="slider-card">
+                <span><strong>Duration</strong><small>持续时间</small></span>
+                <output id="durationValue">5</output>
+                <input id="duration" type="range" min="1" max="10" value="5" />
+                <em>它已经持续了多久？</em>
+              </label>
+              <label class="slider-card">
+                <span><strong>Low Control</strong><small>失控感</small></span>
+                <output id="controlValue">5</output>
+                <input id="control" type="range" min="1" max="10" value="5" />
+                <em>你觉得它有多难掌控？</em>
+              </label>
+              <label class="slider-card">
+                <span><strong>Body Response</strong><small>身体反应</small></span>
+                <output id="bodyValue">5</output>
+                <input id="body" type="range" min="1" max="10" value="5" />
+                <em>身体反应有多明显？</em>
+              </label>
+              <label class="slider-card">
+                <span><strong>Expression</strong><small>表达困难</small></span>
+                <output id="expressionValue">5</output>
+                <input id="expression" type="range" min="1" max="10" value="5" />
+                <em>它有多难被说清楚？</em>
+              </label>
+              <label class="slider-card">
+                <span><strong>Expectation Gap</strong><small>预期落差</small></span>
+                <output id="gapValue">5</output>
+                <input id="gap" type="range" min="1" max="10" value="5" />
+                <em>现实与预期相距多远？</em>
+              </label>
+            </div>
+          </div>
+
+          <footer class="step-actions">
+            <button id="backToSourcesBtn" class="quiet-button" type="button">Back</button>
+            <button id="revealMapBtn" class="primary-button" type="button">
+              <span>Generate Orbital Map<br /><small>生成行星压力图</small></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
+            </button>
+          </footer>
+        </section>
+
+        <section id="resultStep" class="step-panel result-step" aria-labelledby="resultTitle">
+          <div class="result-heading">
+            <div>
+              <p class="eyebrow">ORBITAL PRESSURE MAP</p>
+              <h2 id="resultTitle">你的压力结构，正在这里运行。</h2>
+            </div>
+            <p>中心代表此刻引力最强的来源。其余压力没有消失，只是被放回各自的位置。</p>
+          </div>
+
+          <div class="result-grid">
+            <section class="map-card">
+              <div class="map-meta">
+                <span>LIVE OBSERVATION</span>
+                <span>Slow · Calm · Local</span>
+              </div>
+              <div id="resultOrbitalView" class="orbital-view"></div>
+              <div class="map-legend">
+                <span><i class="legend-star"></i> 中心引力</span>
+                <span><i class="legend-orbit"></i> 持续时间</span>
+                <span><i class="legend-planet"></i> 压力强度</span>
+              </div>
+            </section>
+
+            <aside class="insight-card">
+              <p class="eyebrow">A QUIET READING</p>
+              <h3 id="dominantName">—</h3>
+              <p id="structureReading" class="reading">—</p>
+              <dl>
+                <div><dt>Structure</dt><dd id="structureType">—</dd></div>
+                <div><dt>Strongest variable</dt><dd id="strongestVariable">—</dd></div>
+                <div><dt>Visible sources</dt><dd id="visibleSources">—</dd></div>
+              </dl>
+              <div class="gentle-action">
+                <span>ONE LOW-BURDEN STEP</span>
+                <p id="gentleAction">—</p>
+              </div>
+              <button id="breathingBtn" class="secondary-button" type="button">Take a 60-second pause</button>
+            </aside>
+          </div>
+
+          <section class="guide-entry-card" aria-labelledby="guideEntryTitle">
+            <div>
+              <p class="eyebrow">AI-ASSISTED NEXT STEP</p>
+              <h3 id="guideEntryTitle">AI-assisted Guided Re-orbit</h3>
+              <strong>大模型辅助的引导式压力调轨</strong>
+              <p>The system can help you choose one pressure source to start with. It considers pressure strength, urgency, difficulty, and actionability.</p>
+              <small>系统可以辅助你选择一个更适合作为第一步的压力源。它会综合考虑压力强度、紧急性、处理难度和可行动性。</small>
+            </div>
+            <div class="guide-entry-actions">
+              <button id="observeOnlyBtn" class="quiet-button" type="button">
+                Just observe <span>先观察一下</span>
+              </button>
+              <button id="enterGuideBtn" class="primary-button" type="button">
+                <span>Start guided re-orbit<br /><small>进入引导式调轨</small></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
+              </button>
+              <p id="observeStatus" class="observe-status" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+
+          <footer class="step-actions result-actions">
+            <button id="backToVariablesBtn" class="quiet-button" type="button">Adjust variables</button>
+            <button id="restartBtn" class="primary-button" type="button">
+              <span>Reveal Again</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6.1 9a7 7 0 0 1 11.6-2.6L20 9M4 15l2.3 2.6A7 7 0 0 0 18 15" /></svg>
+            </button>
+          </footer>
+        </section>
+
+        <section id="guided-reorbit-section" class="step-panel guided-reorbit-step" aria-labelledby="guidedReorbitTitle">
+          <div class="guided-heading">
+            <div>
+              <p class="eyebrow">AI-ASSISTED GUIDED RE-ORBIT</p>
+              <h2 id="guidedReorbitTitle">Guided Re-orbit</h2>
+              <strong>大模型辅助的引导式压力调轨</strong>
+            </div>
+            <p>
+              Start with one workable pressure source, not all of them at once.
+              <span>先从一个可以行动的压力源开始，而不是一次处理全部压力。</span>
+            </p>
+          </div>
+
+          <div class="guided-layout">
+            <section class="guide-map-card" aria-label="Mini Orbital Map">
+              <div class="map-meta">
+                <span>MINI ORBITAL MAP</span>
+                <span>Selected source highlighted</span>
+              </div>
+              <div id="guidedOrbitalView" class="orbital-view"></div>
+              <div class="guide-map-note">被选中的压力源会保持清晰，其余轨道暂时退到背景中。</div>
+            </section>
+
+            <aside class="guidance-panel">
+              <section class="ai-priority-panel" aria-labelledby="aiPriorityTitle">
+                <div class="ai-panel-heading">
+                  <div>
+                    <span>AI PRIORITY PANEL</span>
+                    <h3 id="aiPriorityTitle">大模型辅助优先级判断</h3>
+                  </div>
+                  <i aria-hidden="true">AI</i>
+                </div>
+
+                <div class="recommendation-badge">
+                  <span>RECOMMENDED FIRST STEP / 推荐先处理</span>
+                  <strong id="recommendedSourceName">—</strong>
+                </div>
+
+                <div id="priorityReasonTags" class="priority-reason-tags" aria-label="推荐理由标签"></div>
+
+                <div class="recommendation-reason">
+                  <span>AI-assisted reason / 大模型辅助解释</span>
+                  <p id="recommendationReasonEn">—</p>
+                  <small id="recommendationReasonZh">—</small>
+                </div>
+              </section>
+
+              <section class="context-panel" aria-labelledby="contextQuestion">
+                <span class="panel-label">CURRENT CONTEXT / 当前状态</span>
+                <h3 id="contextQuestion">Before generating your personalized step, choose what feels most true right now.</h3>
+                <p>在生成个性化建议前，选择一个最符合你当前状态的描述。</p>
+                <div id="contextChips" class="context-chips">
+                  <button type="button" data-context="low-energy" aria-pressed="false">
+                    <span>I have very low energy.</span><small>我现在精力很低。</small>
+                  </button>
+                  <button type="button" data-context="today" aria-pressed="false">
+                    <span>I need something I can do today.</span><small>我需要今天就能做的事。</small>
+                  </button>
+                  <button type="button" data-context="involves-other" aria-pressed="false">
+                    <span>This involves another person.</span><small>这件事涉及他人。</small>
+                  </button>
+                  <button type="button" data-context="not-talk" aria-pressed="false">
+                    <span>I do not want to talk about it yet.</span><small>我还不想说出来。</small>
+                  </button>
+                  <button type="button" data-context="organize-first" aria-pressed="false">
+                    <span>I only want to organize it first.</span><small>我只想先整理一下。</small>
+                  </button>
+                </div>
+                <small id="contextChipHint" class="context-chip-hint">Choose up to 2 / 最多选择 2 项</small>
+              </section>
+
+              <div>
+                <span class="panel-label">CHOOSE AN ORBIT / 选择压力源</span>
+                <div id="guideSourceChips" class="guide-source-chips"></div>
+              </div>
+
+              <section class="personalized-suggestion" aria-labelledby="personalizedTitle">
+                <span class="panel-label">PERSONALIZED SUGGESTION / 个性化建议</span>
+                <h3 id="personalizedTitle">A smaller step shaped around your current context.</h3>
+                <div class="personalized-row">
+                  <strong>AI-assisted reason</strong>
+                  <p id="personalizedReasonEn">—</p>
+                  <small id="personalizedReasonZh">—</small>
+                </div>
+                <div class="personalized-row">
+                  <strong>Personalized note</strong>
+                  <p id="personalizedNoteEn">—</p>
+                  <small id="personalizedNoteZh">—</small>
+                </div>
+                <div class="personalized-row adjusted-step">
+                  <strong>Adjusted first step / 调整后的第一步</strong>
+                  <p id="adjustedStepHintEn">—</p>
+                  <small id="adjustedStepHintZh">—</small>
+                </div>
+                <p class="structured-note">This suggestion is generated from structured inputs and does not provide a clinical assessment.<br />该建议仅基于结构化输入生成，不构成临床判断。</p>
+              </section>
+
+              <div class="guided-action-card">
+                <span class="panel-label">ONE WORKABLE ACTION / 一个可行动步骤</span>
+                <h3 id="guidedActionTitle">—</h3>
+                <ol id="guidedActionSteps"></ol>
+              </div>
+
+              <details class="reasoning-basis">
+                <summary>View reasoning basis <span>查看判断依据</span></summary>
+                <dl>
+                  <div><dt>Pressure gravity / 压力引力</dt><dd id="basisPressureGravity">—</dd></div>
+                  <div><dt>Actionability / 可行动性</dt><dd id="basisActionability">—</dd></div>
+                  <div><dt>Difficulty / 处理难度</dt><dd id="basisDifficulty">—</dd></div>
+                  <div><dt>Urgency / 紧急性</dt><dd id="basisUrgency">—</dd></div>
+                  <div><dt>Guidance priority / 引导优先级</dt><dd id="basisGuidancePriority">—</dd></div>
+                </dl>
+                <p>The AI explanation is based on these structured scores and the user's selected context.</p>
+                <small>大模型辅助解释基于这些结构化分数和用户选择的当前状态生成。</small>
+              </details>
+
+              <button id="finishGuideBtn" class="primary-button finish-guide-button" type="button">
+                <span>I finished this step<br /><small>我完成了这一步</small></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 7" /></svg>
+              </button>
+
+              <div id="reorbitFeedback" class="reorbit-feedback" role="status" aria-live="polite" hidden>
+                <span>ORBIT SHIFTED</span>
+                <p id="reorbitFeedbackEn">The pressure is still there, but its orbit has shifted a little.</p>
+                <small id="reorbitFeedbackZh">压力仍然存在，但它与你的距离已经稍微改变。</small>
+              </div>
+
+              <div class="guided-footer-actions">
+                <button id="backToMapBtn" class="quiet-button" type="button">Back to Orbital Map / 返回行星图</button>
+                <button id="guideBreathingBtn" class="secondary-button" type="button">Recovery Breathing / 恢复呼吸</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="breathingDialog" class="breathing-dialog">
+    <button id="closeBreathingBtn" class="dialog-close" type="button" aria-label="关闭">×</button>
+    <p class="eyebrow">A SMALL PAUSE</p>
+    <h2>先让轨道慢一点。</h2>
+    <div class="breath-orb"><span id="breathPhase">Inhale</span></div>
+    <p id="breathHint">缓慢吸气 4 秒</p>
+    <small>这只是一个回到当下的短暂停顿。</small>
+  </dialog>
+
+  <script src="scoring.js"></script>
+  <script src="actions.js"></script>
+  <script src="llmMock.js"></script>
+  <script src="orbital.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
