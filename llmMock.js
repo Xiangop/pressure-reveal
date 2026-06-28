@@ -39,9 +39,24 @@
     }
   };
 
+  function normalizeVariableValue(id, value) {
+    const numeric = Number(value) || 0;
+    if (id === "intensity" && numeric > 10) return numeric / 10;
+    return numeric;
+  }
+
+  function getAnonymousConcernContext(text) {
+    const value = String(text || "").trim();
+    return {
+      hasText: Boolean(value),
+      length: value.length,
+      wordCount: value ? value.split(/\s+/).filter(Boolean).length : 0
+    };
+  }
+
   function getKeyVariable(profile) {
     const entry = Object.entries(profile || {})
-      .sort((a, b) => Number(b[1]) - Number(a[1]))[0] || ["intensity", 0];
+      .sort((a, b) => normalizeVariableValue(b[0], b[1]) - normalizeVariableValue(a[0], a[1]))[0] || ["intensity", 0];
     return {
       id: entry[0],
       label: keyVariableLabels[entry[0]] || entry[0],
@@ -81,6 +96,7 @@
       guidancePriority: recommendedItem?.scores.guidancePriority || 0,
       keyVariable: getKeyVariable(sourceProfiles[selectedGuideSource]),
       contextChips: [...(currentState.guide.contextChips || [])],
+      anonymousConcern: getAnonymousConcernContext(currentState.anonymousConcern),
       matchedAction: {
         title: matchedAction.title,
         steps: matchedAction.steps.map((step) => [...step])
@@ -146,6 +162,12 @@
   }
 
   function buildPersonalizedNote(payload) {
+    const privateNote = payload.anonymousConcern?.hasText
+      ? {
+          en: "Your private note can stay as the reference point, so you do not need to explain it again here.",
+          zh: "你写下的私密记录可以作为参照，不需要在这里重新解释。"
+        }
+      : null;
     const notes = {
       "low-energy": {
         en: "Because your current energy is low, the first step should be smaller than usual.",
@@ -175,10 +197,12 @@
 
     if (selectedNotes.length) {
       return {
-        en: selectedNotes.map((item) => item.en).join(" "),
-        zh: selectedNotes.map((item) => item.zh).join("")
+        en: [...selectedNotes.map((item) => item.en), privateNote?.en].filter(Boolean).join(" "),
+        zh: [...selectedNotes.map((item) => item.zh), privateNote?.zh].filter(Boolean).join("")
       };
     }
+
+    if (privateNote) return privateNote;
 
     const variableNotes = {
       control: {

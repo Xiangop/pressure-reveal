@@ -36,12 +36,17 @@
           <p>从看见开始，再完成一个低负担的小步骤。</p>
         </div>
         <div class="hero-actions">
-          <button class="primary-button hero-button" type="button" data-start>
-            <span>Start Revealing</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 12h13M14 7l5 5-5 5" />
-            </svg>
-          </button>
+          <div class="hero-action-row">
+            <button class="primary-button hero-button" type="button" data-start>
+              <span>Start Revealing</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h13M14 7l5 5-5 5" />
+              </svg>
+            </button>
+            <button class="quiet-button hero-anonymous-button" type="button" data-start-anonymous>
+              Write anonymously
+            </button>
+          </div>
           <p>No login · No clinical labels · No data storage</p>
         </div>
       </div>
@@ -131,6 +136,37 @@
           <span class="local-note">LOCAL ONLY</span>
         </header>
 
+        <section id="anonymousStep" class="step-panel anonymous-step" aria-labelledby="anonymousTitle">
+          <div class="step-heading compact-heading">
+            <p class="eyebrow">OPTIONAL PRIVATE NOTE</p>
+            <h2 id="anonymousTitle">Anonymous Concern Input</h2>
+            <p>This page is optional. You can write freely, save it only in this browser session, or continue without writing.</p>
+          </div>
+
+          <div class="anonymous-panel">
+            <div class="anonymous-panel-heading">
+              <span>PRIVATE SPACE</span>
+              <p>This is a private space. Your words are not stored on any server.</p>
+            </div>
+            <label class="anonymous-field" for="anonymousConcernText">
+              <span>What is bothering you right now?</span>
+              <textarea id="anonymousConcernText" rows="9" spellcheck="true" placeholder="Write as much or as little as you want."></textarea>
+            </label>
+            <p id="anonymousConcernStatus" class="anonymous-status" role="status" aria-live="polite"></p>
+          </div>
+
+          <footer class="step-actions">
+            <p>Local browser state only</p>
+            <div class="step-action-buttons">
+              <button id="skipAnonymousBtn" class="quiet-button" type="button">Skip and continue</button>
+              <button id="saveAnonymousBtn" class="primary-button" type="button">
+                <span>Save privately</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 7" /></svg>
+              </button>
+            </div>
+          </footer>
+        </section>
+
         <section id="modeStep" class="step-panel is-active" aria-labelledby="modeTitle">
           <div class="step-heading">
             <p class="eyebrow">CHOOSE THE STRUCTURE</p>
@@ -155,10 +191,13 @@
 
           <footer class="step-actions">
             <p id="modeHint">请选择一种压力结构</p>
-            <button id="toSourcesBtn" class="primary-button" type="button" disabled>
-              <span>Choose pressure sources</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
-            </button>
+            <div class="step-action-buttons">
+              <button class="quiet-button" type="button" data-anonymous-entry>Write anonymously</button>
+              <button id="toSourcesBtn" class="primary-button" type="button" disabled>
+                <span>Choose pressure sources</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
+              </button>
+            </div>
           </footer>
         </section>
 
@@ -223,10 +262,13 @@
 
           <footer class="step-actions">
             <p id="selectionCount">尚未选择压力来源</p>
-            <button id="toVariablesBtn" class="primary-button" type="button" disabled>
-              <span>Continue</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
-            </button>
+            <div class="step-action-buttons">
+              <button class="quiet-button" type="button" data-anonymous-entry>Anonymous input</button>
+              <button id="toVariablesBtn" class="primary-button" type="button" disabled>
+                <span>Continue</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>
+              </button>
+            </div>
           </footer>
         </section>
 
@@ -251,8 +293,8 @@
             <div class="slider-grid">
               <label class="slider-card">
                 <span><strong>Intensity</strong><small>压力强度</small></span>
-                <output id="intensityValue">5</output>
-                <input id="intensity" type="range" min="1" max="10" value="5" />
+                <output id="intensityValue">50</output>
+                <input id="intensity" type="range" min="0" max="100" value="50" />
                 <em>此刻它有多强烈？</em>
               </label>
               <label class="slider-card">
@@ -289,7 +331,10 @@
           </div>
 
           <footer class="step-actions">
-            <button id="backToSourcesBtn" class="quiet-button" type="button">Back</button>
+            <div class="step-action-buttons">
+              <button id="backToSourcesBtn" class="quiet-button" type="button">Back</button>
+              <button class="quiet-button" type="button" data-anonymous-entry>Anonymous input</button>
+            </div>
             <button id="revealMapBtn" class="primary-button" type="button">
               <span>Generate Orbital Map<br /><small>生成行星压力图</small></span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5" /></svg>

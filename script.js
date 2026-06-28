@@ -44,7 +44,7 @@ const sourceOptions = {
 };
 
 const variableMeta = {
-  intensity: { label: "Intensity / 压力强度", weight: 0.3 },
+  intensity: { label: "Intensity / 压力强度", weight: 0.3, scale: 100 },
   duration: { label: "Duration / 持续时间", weight: 0.2 },
   control: { label: "Low Control / 失控感", weight: 0.2 },
   body: { label: "Body Response / 身体反应", weight: 0.1 },
@@ -54,7 +54,7 @@ const variableMeta = {
 
 const sliderIds = Object.keys(variableMeta);
 const defaultProfile = {
-  intensity: 5,
+  intensity: 50,
   duration: 5,
   control: 5,
   body: 5,
@@ -83,11 +83,14 @@ const state = {
   combined: null,
   seed: 1,
   currentStep: "mode",
+  anonymousConcern: "",
+  anonymousReturnStep: "mode",
   guide: createGuideState()
 };
 
 window.sourceOptions = sourceOptions;
 window.pressureRevealState = state;
+window.appState = state;
 
 const $ = (id) => document.getElementById(id);
 let breathTimer = null;
@@ -104,11 +107,40 @@ function ensureProfile(source) {
   return state.sourceProfiles[source];
 }
 
+function normalizeVariableValue(id, value) {
+  const numeric = Number(value) || 0;
+  if (id === "intensity" && numeric > 10) return numeric / 10;
+  return numeric;
+}
+
+function formatVariableValue(id, value) {
+  const scale = variableMeta[id]?.scale || 10;
+  const precision = scale === 100 ? 0 : 1;
+  return `${Number(value).toFixed(precision)}/${scale}`;
+}
+
+function getStructuredReturnStep() {
+  return ["mode", "source", "variables"].includes(state.currentStep)
+    ? state.currentStep
+    : "mode";
+}
+
 function openExperience() {
   document.body.classList.add("experience-open");
   $("experience").classList.add("is-active");
-  showExperienceStep(state.currentStep || "mode");
+  const step = state.currentStep === "anonymous"
+    ? state.anonymousReturnStep || "mode"
+    : state.currentStep || "mode";
+  showExperienceStep(step);
   window.setTimeout(() => $("exitExperienceBtn").focus(), 80);
+}
+
+function openAnonymousInput(returnStep = null) {
+  document.body.classList.add("experience-open");
+  $("experience").classList.add("is-active");
+  state.anonymousReturnStep = returnStep || getStructuredReturnStep();
+  showExperienceStep("anonymous");
+  window.setTimeout(() => $("anonymousConcernText").focus(), 80);
 }
 
 function closeExperience() {
@@ -119,6 +151,7 @@ function closeExperience() {
 
 function showExperienceStep(step) {
   const panels = {
+    anonymous: $("anonymousStep"),
     mode: $("modeStep"),
     source: $("sourceStep"),
     variables: $("variablesStep"),
@@ -132,6 +165,7 @@ function showExperienceStep(step) {
   state.currentStep = step;
 
   const progress = {
+    anonymous: ["OPTIONAL · ANONYMOUS CONCERN INPUT", "Optional", "20%"],
     mode: ["01 · PRESSURE STRUCTURE", "1 / 5", "20%"],
     source: ["02 · PRESSURE SOURCES", "2 / 5", "40%"],
     variables: ["03 · SIDCBEG VARIABLES", "3 / 5", "60%"],
@@ -146,6 +180,7 @@ function showExperienceStep(step) {
 
   if (typeof stopOrbitalView === "function") stopOrbitalView();
 
+  if (step === "anonymous") loadAnonymousConcern();
   if (step === "source") renderSourceSelection();
   if (step === "variables") {
     renderSourceTabs();
@@ -279,13 +314,39 @@ function updateProfile(id) {
   updateSliderVisual(id);
 }
 
+function loadAnonymousConcern() {
+  $("anonymousConcernText").value = state.anonymousConcern || "";
+  $("anonymousConcernStatus").textContent = state.anonymousConcern
+    ? "Saved locally in this browser session."
+    : "";
+}
+
+function returnFromAnonymousInput() {
+  const nextStep = state.anonymousReturnStep || "mode";
+  showExperienceStep(nextStep);
+}
+
+function saveAnonymousConcern() {
+  state.anonymousConcern = $("anonymousConcernText").value.trim();
+  state.guide.aiGuidance = null;
+  $("anonymousConcernStatus").textContent = state.anonymousConcern
+    ? "Saved privately in local browser state."
+    : "No private note saved.";
+  returnFromAnonymousInput();
+}
+
+function skipAnonymousConcern() {
+  $("anonymousConcernText").value = state.anonymousConcern || "";
+  returnFromAnonymousInput();
+}
+
 function createCombinedStructure() {
   const profiles = state.selectedSources
     .map((source) => {
       const profile = ensureProfile(source);
       const score = typeof computePressureGravity === "function"
         ? computePressureGravity(source, profile)
-        : sliderIds.reduce((sum, id) => sum + profile[id] * variableMeta[id].weight, 0);
+        : sliderIds.reduce((sum, id) => sum + normalizeVariableValue(id, profile[id]) * variableMeta[id].weight, 0);
       return { source, profile, score, pressureGravity: score };
     })
     .sort((a, b) => b.score - a.score);
@@ -297,8 +358,12 @@ function createCombinedStructure() {
 
   const dominant = profiles[0];
   const strongestVariable = sliderIds
-    .map((id) => ({ id, value: averages[id] }))
-    .sort((a, b) => b.value - a.value)[0];
+    .map((id) => ({
+      id,
+      value: averages[id],
+      normalizedValue: normalizeVariableValue(id, averages[id])
+    }))
+    .sort((a, b) => b.normalizedValue - a.normalizedValue)[0];
 
   return {
     selectedSources: [...state.selectedSources],
@@ -335,7 +400,7 @@ function renderResult() {
     ? "Single-source / 单一来源"
     : "Compound / 多来源叠加";
   $("strongestVariable").textContent =
-    `${variableMeta[state.combined.keyVariable.id].label} · ${state.combined.keyVariable.value.toFixed(1)}/10`;
+    `${variableMeta[state.combined.keyVariable.id].label} · ${formatVariableValue(state.combined.keyVariable.id, state.combined.keyVariable.value)}`;
   $("visibleSources").textContent =
     state.selectedSources.map((source) => sourceOptions[source].short).join(" · ");
 
@@ -517,8 +582,10 @@ function finishGuidedAction() {
     distanceOffset: 60,
     sizeScale: 0.88,
     speedScale: 0.65,
-    opacityScale: 0.72,
-    haloScale: 0.65
+    opacityScale: 0.86,
+    haloScale: 0.72,
+    shineScale: 0.82,
+    textureScale: 0.78
   };
 
   state.guide.completedActions[source] = true;
@@ -553,6 +620,7 @@ function resetExperience() {
   state.combined = null;
   state.seed = 1;
   state.currentStep = "mode";
+  state.anonymousReturnStep = "mode";
   state.guide = createGuideState();
 
   if (typeof stopOrbitalView === "function") stopOrbitalView();
@@ -613,6 +681,14 @@ function bindEvents() {
     button.addEventListener("click", openExperience);
   });
 
+  document.querySelectorAll("[data-start-anonymous]").forEach((button) => {
+    button.addEventListener("click", () => openAnonymousInput("mode"));
+  });
+
+  document.querySelectorAll("[data-anonymous-entry]").forEach((button) => {
+    button.addEventListener("click", () => openAnonymousInput());
+  });
+
   document.querySelectorAll("[data-scroll-to]").forEach((button) => {
     button.addEventListener("click", () => {
       const target = document.getElementById(button.dataset.scrollTo);
@@ -642,6 +718,8 @@ function bindEvents() {
   });
 
   $("exitExperienceBtn").addEventListener("click", closeExperience);
+  $("saveAnonymousBtn").addEventListener("click", saveAnonymousConcern);
+  $("skipAnonymousBtn").addEventListener("click", skipAnonymousConcern);
   $("toSourcesBtn").addEventListener("click", () => {
     if (state.pressureMode) showExperienceStep("source");
   });

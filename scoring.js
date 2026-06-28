@@ -13,14 +13,22 @@
     return Math.min(Math.max(value, min), max);
   }
 
+  function normalizeIntensity(value) {
+    const numeric = Number(value) || 0;
+    return numeric > 10
+      ? clamp(numeric / 10, 0, 10)
+      : clamp(numeric, 0, 10);
+  }
+
   function roundScore(value) {
     return Math.round(value * 100) / 100;
   }
 
   function computePressureGravity(source, profile) {
     if (!profile) return 0;
+    const intensity = normalizeIntensity(profile.intensity);
     return roundScore(
-      profile.intensity * 0.30 +
+      intensity * 0.30 +
       profile.duration * 0.20 +
       profile.control * 0.20 +
       profile.body * 0.10 +
@@ -31,9 +39,10 @@
 
   function computeUrgency(source, profile) {
     const meta = sourceMeta[source] || { baseUrgency: 4 };
+    const intensity = normalizeIntensity(profile.intensity);
     const urgency =
       meta.baseUrgency +
-      profile.intensity * 0.15 +
+      intensity * 0.15 +
       profile.duration * 0.10 +
       profile.control * 0.10;
     return roundScore(clamp(urgency, 1, 10));
